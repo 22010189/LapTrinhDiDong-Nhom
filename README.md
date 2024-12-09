@@ -1,3 +1,4 @@
 # LapTrinhDiDong-Nhom
--Thành viên : Nguyễn Đức Lâm \n
+-Thành viên : Nguyễn Đức Lâm
+
               Nguyễn Quốc Ngọc
