@@ -2,6 +2,7 @@ import 'package:app_nghe_nhac/view/AnBaiHat.dart';
 import 'package:app_nghe_nhac/view/DaTai.dart';
 import 'package:app_nghe_nhac/view/NgheGanDay.dart';
 import 'package:app_nghe_nhac/view/YeuThich.dart';
+import 'package:app_nghe_nhac/view/widgetsForThuVien/more_options.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/option_card.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/playlist_item.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/recent_card.dart';
@@ -30,7 +31,7 @@ class ThuVien extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.more_vert, color: Colors.white),
-            onPressed: () {},
+            onPressed: () => showMoreOptions(context),
           ),
         ],
       ),
@@ -48,7 +49,7 @@ class ThuVien extends StatelessWidget {
                     count: '52',
                     color: Colors.blue,
                     onTap: () => NavigationController.navigateTo(
-                        context, YeuThich())),   //màn hình yêu thích
+                        context, YeuThich())), //màn hình yêu thích
                 SizedBox(width: 10),
                 OptionCard(
                     icon: Icons.download,
@@ -56,7 +57,7 @@ class ThuVien extends StatelessWidget {
                     count: '92',
                     color: Colors.purple,
                     onTap: () => NavigationController.navigateTo(
-                        context, DaTai())),  //giao diện đã tải
+                        context, DaTai())), //giao diện đã tải
                 SizedBox(width: 10),
                 Padding(
                   padding: EdgeInsets.only(bottom: 16),
@@ -65,8 +66,8 @@ class ThuVien extends StatelessWidget {
                       title: 'Offline Mix',
                       count: '',
                       color: Colors.pink,
-                      onTap: () => NavigationController.navigateTo(
-                          context, Placeholder())),  // bỏ qua k code giao diện này
+                      onTap: () => NavigationController.navigateTo(context,
+                          Placeholder())), // bỏ qua k code giao diện này
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 16, left: 10),
@@ -76,7 +77,7 @@ class ThuVien extends StatelessWidget {
                       count: '',
                       color: const Color.fromARGB(255, 252, 252, 0),
                       onTap: () => NavigationController.navigateTo(
-                          context, AnBaiHat())),   //giao diện ẩn bài hát
+                          context, AnBaiHat())), //giao diện ẩn bài hát
                 ),
               ],
             ),
@@ -100,8 +101,8 @@ class ThuVien extends StatelessWidget {
                 RecentCard(
                     title: 'Bài Hát Nghe Gần Đây',
                     icon: Icons.history,
-                    onTap: () => NavigationController.navigateTo(
-                        context, NgheGanDay())),  //giao diện bài hát nghe gần đây
+                    onTap: () => NavigationController.navigateTo(context,
+                        NgheGanDay())), //giao diện bài hát nghe gần đây
                 ValueListenableBuilder<String>(
                   valueListenable: recentPlaylist,
                   builder: (context, value, child) {
@@ -208,7 +209,7 @@ class ThuVien2State extends State<ThuVien2> {
       children: [
         // Danh sách playlist
         Container(
-          height: 230,
+          height: 180,
           child: ListView.builder(
             itemCount: playlists.length + 1, // +1 để có thêm nút "Tạo playlist"
             itemBuilder: (context, index) {
@@ -236,7 +237,7 @@ class ThuVien2State extends State<ThuVien2> {
               }
             },
           ),
-        ),        
+        ),
       ],
     );
   }

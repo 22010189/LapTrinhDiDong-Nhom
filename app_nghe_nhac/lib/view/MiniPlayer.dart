@@ -1,6 +1,9 @@
+import 'package:app_nghe_nhac/controller/list_songs.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
+import 'package:flutter/services.dart';
+
 
 class MiniPlayer extends StatefulWidget {
   @override
@@ -14,23 +17,7 @@ class _MiniPlayerState extends State<MiniPlayer>
   int currentIndex = 0;
   late AnimationController _rotationController;
 
-  List<Map<String, String>> songs = [
-    {
-      'title': 'a',
-      'url': 'assets/song/a.mp3',
-      'image': 'assets/image/disc.jpg'
-    },
-    {
-      'title': 'b',
-      'url': 'assets/song/b.mp3',
-      'image': 'assets/image/disc.jpg'
-    },
-    {
-      'title': 'c',
-      'url': 'assets/song/c.mp3',
-      'image': 'assets/image/disc.jpg'
-    },
-  ];
+  static List<Map<String, String>> songs = [];
 
   @override
   void initState() {
@@ -42,8 +29,16 @@ class _MiniPlayerState extends State<MiniPlayer>
     _audioPlayer.onPlayerComplete.listen((event) {
       _nextSong(); // Tự động chuyển sang bài tiếp theo
     });
+    _loadSongList();
     
   }
+
+  void _loadSongList() async {
+  List<Map<String, String>> loadedSongs = await ListSongs.loadSongs();
+  setState(() {
+    songs = loadedSongs;
+  });
+}
 
   @override
   void dispose() {
@@ -61,7 +56,7 @@ class _MiniPlayerState extends State<MiniPlayer>
       if (state == PlayerState.paused) {
         await _audioPlayer.resume(); // Tiếp tục phát từ vị trí tạm dừng
       } else {
-        await _audioPlayer.play(UrlSource('${songs[currentIndex]['url']}'));
+        await _audioPlayer.play(AssetSource(songs[currentIndex]['url']!.replaceFirst('assets/', '')));
       }
       _rotationController.repeat();
     }
@@ -91,7 +86,7 @@ class _MiniPlayerState extends State<MiniPlayer>
   void _playNewSong() async {
     await _audioPlayer.stop();
     print('Playing: ${songs[currentIndex]['url']}');
-    await _audioPlayer.play(UrlSource('${songs[currentIndex]['url']}'));
+    await _audioPlayer.play(AssetSource(songs[currentIndex]['url']!.replaceFirst('assets/', '')));
     _rotationController.repeat();
     setState(() {
       isPlaying = true;
@@ -116,7 +111,7 @@ class _MiniPlayerState extends State<MiniPlayer>
             },
             child: ClipOval(
               child: Image.asset(
-                songs[currentIndex]['image']!,
+                'assets/image/disc.jpg',
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
@@ -127,7 +122,7 @@ class _MiniPlayerState extends State<MiniPlayer>
           // Tên bài hát
           Expanded(
             child: Text(
-              songs[currentIndex]['title']!,
+              songs.isNotEmpty ? songs[currentIndex]['title']! : "Không có bài hát",
               style: TextStyle(color: Colors.white, fontSize: 16),
               overflow: TextOverflow.ellipsis,
             ),
@@ -155,3 +150,5 @@ class _MiniPlayerState extends State<MiniPlayer>
     );
   }
 }
+
+
