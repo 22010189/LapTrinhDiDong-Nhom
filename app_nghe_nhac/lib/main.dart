@@ -45,7 +45,10 @@ class AppMusicState extends State<AppMusic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[currentIndex], // Hiển thị giao diện tương ứng
+      body: IndexedStack(
+        index: currentIndex,     // Hiển thị giao diện tương ứng trong list screens
+        children: screens,
+      ),  
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
