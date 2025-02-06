@@ -1,8 +1,9 @@
 import 'package:app_nghe_nhac/controller/navigation_controller.dart';
+import 'package:app_nghe_nhac/controller/song_provider.dart';
 import 'package:app_nghe_nhac/view/widgetsForBaiHat/Songs.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/more_options.dart';
 import 'package:flutter/material.dart';
-import 'package:app_nghe_nhac/controller/list_songs.dart';
+import 'package:provider/provider.dart';
 
 class SongScreen extends StatefulWidget {
   @override
@@ -10,19 +11,11 @@ class SongScreen extends StatefulWidget {
 }
 
 class _SongScreenState extends State<SongScreen> {
-  static List<Map<String, String>> songs = [];
-
   @override
   void initState() {
     super.initState();
-    _loadSongs();
-  }
-
-  void _loadSongs() async {
-    List<Map<String, String>> loadedSongs = await ListSongs.loadSongs();
-    setState(() {
-      songs = loadedSongs;
-    });
+    Future.microtask(() =>      //tránh lỗi Provider.of() bị gọi quá sớm
+        Provider.of<SongProvider>(context, listen: false).loadSongs());
   }
 
   @override
@@ -47,21 +40,28 @@ class _SongScreenState extends State<SongScreen> {
           ),
         ],
       ),
-      body: songs.isEmpty
-          ? Center(child: CircularProgressIndicator()) 
-          : ListView.builder(
-              itemCount: songs.length,
-              itemBuilder: (context, index) {
-                return Songs(
-                  title: songs[index]['title']!,
-                  ngheSi: "Không xác định - Download",
-                  onMorePressed: () {
-                    print("Nhấn vào nút more");
-                  },
-                  onTap: () => NavigationController.navigateTo(context, Placeholder()),
-                );
-              },
-            ),
+      body: Consumer<SongProvider>(     // cập nhật UI khi thay đổi dữ liệu
+        builder: (context, songProvider, child) {
+          if (songProvider.songs.isEmpty) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.builder(
+            itemCount: songProvider.songs.length,
+            itemBuilder: (context, index) {
+              return Songs(
+                title: songProvider.songs[index]['title']!,
+                ngheSi: "Không xác định - Download",
+                onMorePressed: () {
+                  print("Nhấn vào nút more");
+                },
+                onTap: () =>
+                    NavigationController.navigateTo(context, Placeholder()),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

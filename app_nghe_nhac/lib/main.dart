@@ -1,12 +1,19 @@
+import 'package:app_nghe_nhac/controller/song_provider.dart';
 import 'package:app_nghe_nhac/view/AlbumScreen.dart';
 import 'package:app_nghe_nhac/view/ArtistScreen.dart';
 import 'package:app_nghe_nhac/view/MiniPlayer.dart';
 import 'package:app_nghe_nhac/view/SongScreen.dart';
 import 'package:app_nghe_nhac/view/ThuVien.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+ runApp(
+    ChangeNotifierProvider(
+      create: (context) => SongProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
