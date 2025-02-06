@@ -146,7 +146,7 @@ class ThuVien2 extends StatefulWidget {
 class ThuVien2State extends State<ThuVien2> {
   List<Map<String, String>> playlists = [];
 
-  /// Hàm hiển thị hộp thoại nhập Playlist
+  // Hàm hiển thị hộp thoại nhập Playlist
   void showCreatePlaylistDialog(BuildContext context) {
     TextEditingController nameController = TextEditingController();
     TextEditingController subtitleController = TextEditingController();
