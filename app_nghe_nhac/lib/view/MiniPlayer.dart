@@ -1,6 +1,5 @@
 import 'package:app_nghe_nhac/controller/song_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 
@@ -11,79 +10,25 @@ class MiniPlayer extends StatefulWidget {
 
 class _MiniPlayerState extends State<MiniPlayer>
     with SingleTickerProviderStateMixin {
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  bool isPlaying = false;
-  int currentIndex = 0;
-  late AnimationController _rotationController;
+
+  late AnimationController rotationController;
 
   @override
   void initState() {
     super.initState();
-    _rotationController = AnimationController(
+    rotationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 5),
     );
-    _audioPlayer.onPlayerComplete.listen((event) {
-      _nextSong();
-    });
-  }
-
-  void _playPause() async {
-    var songProvider = Provider.of<SongProvider>(context, listen: false);
-    if (songProvider.songs.isEmpty) return;
-
-    if (isPlaying) {
-      await _audioPlayer.pause();
-      _rotationController.stop();
-    } else {
-      PlayerState state = _audioPlayer.state;
-      if (state == PlayerState.paused) {
-        await _audioPlayer.resume();
-      } else {
-        await _audioPlayer.play(AssetSource(
-            songProvider.songs[currentIndex]['url']!.replaceFirst('assets/', '')));
-      }
-      _rotationController.repeat();
-    }
-    setState(() {
-      isPlaying = !isPlaying;
-    });
-  }
-
-  void _nextSong() {
-    var songProvider = Provider.of<SongProvider>(context, listen: false);
-    if (songProvider.songs.isEmpty) return;
-
-    currentIndex = (currentIndex + 1) % songProvider.songs.length;
-    _playNewSong();
-  }
-
-  void _previousSong() {
-    var songProvider = Provider.of<SongProvider>(context, listen: false);
-    if (songProvider.songs.isEmpty) return;
-
-    currentIndex = (currentIndex - 1 + songProvider.songs.length) % songProvider.songs.length;
-    _playNewSong();
-  }
-
-  void _playNewSong() async {
-    var songProvider = Provider.of<SongProvider>(context, listen: false);
-    if (songProvider.songs.isEmpty) return;
-
-    await _audioPlayer.stop();
-    print('Playing: ${songProvider.songs[currentIndex]['url']}');
-    await _audioPlayer.play(AssetSource(
-        songProvider.songs[currentIndex]['url']!.replaceFirst('assets/', '')));
-    _rotationController.repeat();
-    setState(() {
-      isPlaying = true;
+    SongProvider.audioPlayer.onPlayerComplete.listen((event) {
+      Provider.of<SongProvider>(context, listen: false).nextSong();
     });
   }
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
-    _rotationController.dispose();
+    SongProvider.audioPlayer.dispose();
+    rotationController.dispose();
     super.dispose();
   }
 
@@ -111,10 +56,10 @@ class _MiniPlayerState extends State<MiniPlayer>
             children: [
               // Icon album xoay tròn
               AnimatedBuilder(
-                animation: _rotationController,
+                animation: rotationController,
                 builder: (context, child) {
                   return Transform.rotate(
-                    angle: _rotationController.value * 2 * pi,
+                    angle: rotationController.value * 2 * pi,
                     child: child,
                   );
                 },
@@ -131,7 +76,7 @@ class _MiniPlayerState extends State<MiniPlayer>
               // Tên bài hát
               Expanded(
                 child: Text(
-                  songProvider.songs[currentIndex]['title']!,
+                  songProvider.songs[songProvider.currentIndex]['title']!,
                   style: TextStyle(color: Colors.white, fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -140,20 +85,33 @@ class _MiniPlayerState extends State<MiniPlayer>
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.skip_previous, color: Colors.white),
-                    onPressed: _previousSong,
-                  ),
+                      icon: Icon(Icons.skip_previous, color: Colors.white),
+                      onPressed: () {
+                        Provider.of<SongProvider>(context, listen: false)
+                            .previousSong();
+                        rotationController.repeat();
+                      }),
                   IconButton(
-                    icon: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white,
-                    ),
-                    onPressed: _playPause,
-                  ),
+                      icon: Icon(
+                        songProvider.isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        if (songProvider.isPlaying) {
+                          rotationController.stop();
+                        } else {
+                          rotationController.repeat();
+                        }
+                        Provider.of<SongProvider>(context, listen: false)
+                            .playPause();
+                      }),
                   IconButton(
-                    icon: Icon(Icons.skip_next, color: Colors.white),
-                    onPressed: _nextSong,
-                  ),
+                      icon: Icon(Icons.skip_next, color: Colors.white),
+                      onPressed: () {
+                        Provider.of<SongProvider>(context, listen: false)
+                            .nextSong();
+                        rotationController.repeat();
+                      }),
                 ],
               ),
             ],

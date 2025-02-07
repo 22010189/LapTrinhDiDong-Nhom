@@ -1,4 +1,3 @@
-import 'package:app_nghe_nhac/controller/navigation_controller.dart';
 import 'package:app_nghe_nhac/controller/song_provider.dart';
 import 'package:app_nghe_nhac/view/widgetsForBaiHat/Songs.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/more_options.dart';
@@ -40,25 +39,62 @@ class _SongScreenState extends State<SongScreen> {
           ),
         ],
       ),
-      body: Consumer<SongProvider>(     // cập nhật UI khi thay đổi dữ liệu
+      body: Consumer<SongProvider>(
         builder: (context, songProvider, child) {
           if (songProvider.songs.isEmpty) {
             return Center(child: CircularProgressIndicator());
           }
 
-          return ListView.builder(
-            itemCount: songProvider.songs.length,
-            itemBuilder: (context, index) {
-              return Songs(
-                title: songProvider.songs[index]['title']!,
-                ngheSi: "Không xác định - Download",
-                onMorePressed: () {
-                  print("Nhấn vào nút more");
-                },
-                onTap: () =>
-                    NavigationController.navigateTo(context, Placeholder()),
-              );
-            },
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (songProvider.songs.isNotEmpty) {
+                           Provider.of<SongProvider>(context, listen: false).playFromIndex(0);
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.play_arrow, color: Colors.white, size: 28),
+                          SizedBox(width: 8),
+                          Text(
+                            'Phát tất cả',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '${songProvider.songs.length} bài hát',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: songProvider.songs.length,
+                  itemBuilder: (context, index) {
+                    return Songs(
+                      title: songProvider.songs[index]['title']!,
+                      ngheSi: "Không xác định - Download",
+                      onMorePressed: () {
+                        print("Nhấn vào nút more");
+                      },
+                      onTap: () {
+                        Provider.of<SongProvider>(context, listen: false).playFromIndex(index); 
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
