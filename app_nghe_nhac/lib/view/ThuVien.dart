@@ -1,7 +1,6 @@
 import 'package:app_nghe_nhac/view/AnBaiHat.dart';
-import 'package:app_nghe_nhac/view/DaTai.dart';
 import 'package:app_nghe_nhac/view/NgheGanDay.dart';
-import 'package:app_nghe_nhac/view/SongScreen.dart';
+import 'package:app_nghe_nhac/view/BaiHat.dart';
 import 'package:app_nghe_nhac/view/YeuThich.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/more_options.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/option_card.dart';
@@ -58,7 +57,7 @@ class ThuVien extends StatelessWidget {
                     count: '92',
                     color: Colors.purple,
                     onTap: () => NavigationController.navigateTo(
-                        context, SongScreen())), //giao diện đã tải
+                        context, BaiHat())), //giao diện đã tải
                 SizedBox(width: 10),
                 Padding(
                   padding: EdgeInsets.only(bottom: 16),

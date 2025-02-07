@@ -1,15 +1,17 @@
+import 'package:app_nghe_nhac/controller/navigation_controller.dart';
 import 'package:app_nghe_nhac/controller/song_provider.dart';
+import 'package:app_nghe_nhac/view/MusicPlayerScreen.dart';
 import 'package:app_nghe_nhac/view/widgetsForBaiHat/Songs.dart';
 import 'package:app_nghe_nhac/view/widgetsForThuVien/more_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SongScreen extends StatefulWidget {
+class BaiHat extends StatefulWidget {
   @override
-  _SongScreenState createState() => _SongScreenState();
+  _BaiHatState createState() => _BaiHatState();
 }
 
-class _SongScreenState extends State<SongScreen> {
+class _BaiHatState extends State<BaiHat> {
   @override
   void initState() {
     super.initState();
@@ -88,7 +90,8 @@ class _SongScreenState extends State<SongScreen> {
                         print("Nhấn vào nút more");
                       },
                       onTap: () {
-                        Provider.of<SongProvider>(context, listen: false).playFromIndex(index); 
+                        Provider.of<SongProvider>(context, listen: false).playFromIndex(index);
+                        NavigationController.navigateTo(context, MusicPlayerScreen());
                       },
                     );
                   },
