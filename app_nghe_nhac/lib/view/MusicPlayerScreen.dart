@@ -23,7 +23,6 @@ class MusicPlayerScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Ảnh bài hát (có thể dùng NetworkImage nếu có URL ảnh)
           Container(
             width: 250,
             height: 250,
@@ -35,7 +34,6 @@ class MusicPlayerScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
 
-          // Tiêu đề bài hát
           Text(
             currentSong['title'] ?? 'Không có tiêu đề',
             style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
@@ -46,15 +44,14 @@ class MusicPlayerScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
 
-          // Thanh thời gian
+          
           Slider(
-            value: 5, // Giá trị tạm thời, cần cập nhật theo trạng thái bài hát
+            value: 5, 
             min: 0,
             max: 150,
             onChanged: (value) {},
           ),
 
-          // Điều khiển nhạc
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
