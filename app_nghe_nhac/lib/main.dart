@@ -1,6 +1,6 @@
 import 'package:app_nghe_nhac/controller/song_provider.dart';
 import 'package:app_nghe_nhac/firebase_options.dart';
-import 'package:app_nghe_nhac/view/AlbumScreen.dart';
+import 'package:app_nghe_nhac/view/CaNhan.dart';
 import 'package:app_nghe_nhac/view/ArtistScreen.dart';
 import 'package:app_nghe_nhac/view/MiniPlayer.dart';
 import 'package:app_nghe_nhac/view/BaiHat.dart';
@@ -44,8 +44,8 @@ class AppMusicState extends State<AppMusic> {
   final List<Widget> screens = [
     ThuVien(), // Thư viện (Mặc định)
     ArtistScreen(), // Nghệ sĩ
-    AlbumScreen(), // Album
     BaiHat(), // Bài hát
+    CaNhanScreen(),  
   ];
 
   @override
@@ -73,10 +73,9 @@ class AppMusicState extends State<AppMusic> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.library_music), label: 'Thư viện'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'Nghệ sĩ'),
-              BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Album'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.audio_file), label: 'Bài hát'),
+                  icon: Icon(Icons.mic), label: 'Nghệ sĩ'),
+              BottomNavigationBarItem(icon: Icon(Icons.audio_file), label: 'Bài hát'),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Cá nhân'),
             ],
           ),
         ],

@@ -46,7 +46,7 @@ class ThuVien extends StatelessWidget {
                 OptionCard(
                     icon: Icons.favorite,
                     title: 'Yêu thích',
-                    count: '52',
+                    count: ' ',
                     color: Colors.blue,
                     onTap: () => NavigationController.navigateTo(
                         context, YeuThich())), //màn hình yêu thích
@@ -54,7 +54,7 @@ class ThuVien extends StatelessWidget {
                 OptionCard(
                     icon: Icons.download,
                     title: 'Đã tải',
-                    count: '92',
+                    count: ' ',
                     color: Colors.purple,
                     onTap: () => NavigationController.navigateTo(
                         context, BaiHat())), //giao diện đã tải
@@ -62,8 +62,8 @@ class ThuVien extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 16),
                   child: OptionCard(
-                      icon: Icons.wifi_off,
-                      title: 'Offline Mix',
+                      icon: Icons.album,
+                      title: 'Album',
                       count: '',
                       color: Colors.pink,
                       onTap: () => NavigationController.navigateTo(context,
