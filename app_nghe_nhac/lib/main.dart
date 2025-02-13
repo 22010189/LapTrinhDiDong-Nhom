@@ -1,14 +1,20 @@
 import 'package:app_nghe_nhac/controller/song_provider.dart';
+import 'package:app_nghe_nhac/firebase_options.dart';
 import 'package:app_nghe_nhac/view/AlbumScreen.dart';
 import 'package:app_nghe_nhac/view/ArtistScreen.dart';
 import 'package:app_nghe_nhac/view/MiniPlayer.dart';
 import 'package:app_nghe_nhac/view/BaiHat.dart';
 import 'package:app_nghe_nhac/view/ThuVien.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
- runApp(
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
     ChangeNotifierProvider(
       create: (context) => SongProvider(),
       child: MyApp(),
@@ -37,18 +43,18 @@ class AppMusicState extends State<AppMusic> {
   // Danh sách các giao diện cho từng tab
   final List<Widget> screens = [
     ThuVien(), // Thư viện (Mặc định)
-    ArtistScreen(),   // Nghệ sĩ
-    AlbumScreen(),    // Album
-    BaiHat(),     // Bài hát
+    ArtistScreen(), // Nghệ sĩ
+    AlbumScreen(), // Album
+    BaiHat(), // Bài hát
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: currentIndex,     // Hiển thị giao diện tương ứng trong list screens
+        index: currentIndex, // Hiển thị giao diện tương ứng trong list screens
         children: screens,
-      ),  
+      ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -78,5 +84,3 @@ class AppMusicState extends State<AppMusic> {
     );
   }
 }
-
-
